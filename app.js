@@ -13,6 +13,7 @@ app.use(cors());
 
 app.use("/", require("./routes/user"));
 app.use("/", require("./routes/note"));
+app.use("/", require("./routes/task"));
 
 app.get("/", (req, res) => {
     res.status(200).json("TODO App");
