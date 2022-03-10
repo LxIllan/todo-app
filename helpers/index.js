@@ -2,10 +2,14 @@ const crypto = require("crypto");
 require('dotenv').config();
 
 /*
- * @desc    Creates an unique id for users and tasks.
+ * @desc    Creates an unique id for users tasks and notes.
+ * @param {Number} length The length of the unique id.
 */
-exports.createId = () => {
-    return Math.random().toString(36).slice(2);
+exports.createUniqueId = (length) => {
+    if (length < 5) {
+        length = 5;
+    }
+    return Math.random().toString(36).slice(2).substring(0, length);
 };
 
 /*

@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
-const { createId, encryptPassword, customPrismaErrors } = require("../helpers/index");
+const { createUniqueId, encryptPassword, customPrismaErrors } = require("../helpers/index");
 const { PrismaClient } = require("@prisma/client");
+const { LENGTH_USER_ID } = require("../config/constants");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -17,7 +18,7 @@ exports.signUp = async (req, res) => {
         return res.status(400).json({ error: errors.array().map((e) => e.msg) });
     }
     let { name, lastName, email, password } = req.body;
-    const id = createId();
+    const id = createUniqueId(LENGTH_USER_ID);
     email = email.toLowerCase();
     password = encryptPassword(password);
 
@@ -115,7 +116,7 @@ exports.getUsers = async (req, res) => {
         .catch((err) => {
             const msg = customPrismaErrors(err);
             logger.warn(
-                `User could not be created "${msg}". Method: ${req.method}, URL: ${req.url}.`
+                `Users could not be fetched "${msg}". Method: ${req.method}, URL: ${req.url}.`
             );
             return res.status(400).json({ error: msg });
         });
