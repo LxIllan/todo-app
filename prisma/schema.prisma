@@ -18,15 +18,23 @@ model User {
     password String
     createdAt DateTime @default(now())
     updatedAt DateTime?
-    task Task[]
+    note Note[]
+}
+
+model Note {
+    id      String @id
+    note    String
+    createdAt DateTime @default(now())
+    updatedAt DateTime?
+    tasks Task[]
+    user User @relation(fields: [userId], references: [id])
+    userId String
 }
 
 model Task {
-    id      Int      @id @default(autoincrement())
+    id      String @id
     task    String
     completed Boolean @default(false)
-    createdAt DateTime @default(now())
-    updatedAt DateTime?
-    user User @relation(fields: [userId], references: [id])
-    userId String
+    note Note @relation(fields: [noteId], references: [id])
+    noteId String
 }
